@@ -1,0 +1,61 @@
+[{
+        "name": "Precambrian",
+        "start": -4600,
+        "end": -541
+    },
+    {
+        "name": "Cambrian",
+        "start": -541,
+        "end": -485.4
+    },
+    {
+        "name": "Ordovician",
+        "start": -485.4,
+        "end": -443.8
+    },
+    {
+        "name": "Silurian",
+        "start": -443.8,
+        "end": -419.2
+    },
+    {
+        "name": "Devonian",
+        "start": -419.2,
+        "end": -358.9
+    },
+    {
+        "name": "Carboniferous",
+        "start": -358.9,
+        "end": -298.9
+    },
+    {
+        "name": "Permian",
+        "start": -298.9,
+        "end": -251.9
+    },
+    {
+        "name": "Triassic",
+        "start": -251.9,
+        "end": -201.3
+    },
+    {
+        "name": "Jurassic",
+        "start": -201.3,
+        "end": -145.0
+    },
+    {
+        "name": "Cretaceous",
+        "start": -145,
+        "end": -66
+    },
+    {
+        "name": "Paleogene",
+        "start": -66,
+        "end": -23.03
+    },
+    {
+        "name": "Neogene",
+        "start": -23.03,
+        "end": -2.58
+    }
+]

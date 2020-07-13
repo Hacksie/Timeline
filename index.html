@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>hacked.design - Tree - Timeline Generator</title>
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="timeline.js"></script>
+    <script>
+        'use strict';
+        var timeStart = -200;
+        var timeEnd = -50;
+
+        var periods = [{
+            name: "Precambrian",
+            start: -4600,
+            end: -541
+        }, {
+            name: "Cambrian",
+            start: -541,
+            end: -485.4
+        }, {
+            name: "Ordovician",
+            start: -485.4,
+            end: -443.8
+        }, {
+            name: "Silurian",
+            start: -443.8,
+            end: -419.2
+        }, {
+            name: "Devonian",
+            start: -419.2,
+            end: -358.9
+        }, {
+            name: "Carboniferous",
+            start: -358.9,
+            end: -298.9
+        }, {
+            name: "Permian",
+            start: -298.9,
+            end: -251.9
+        }, {
+            name: "Triassic",
+            start: -251.9,
+            end: -201.3
+        }, {
+            name: "Jurassic",
+            start: -201.3,
+            end: -145.0
+        }, {
+            name: "Cretaceous",
+            start: -145,
+            end: -66
+        }, {
+            name: "Paleogene",
+            start: -66,
+            end: -23.03
+        }, {
+            name: "Neogene",
+            start: -23.03,
+            end: -2.58
+        }];
+
+        var dromaeosaur_tree = {
+            name: "Eudromaeosauria",
+            branches: [{
+                name: "Saurornitholestinae",
+                start: -77,
+                end: -68,
+                branches: [{
+                        name: "Saurornitholestes",
+                        start: -77,
+                        end: -69,
+                        image: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Saurornitholestes_MOR1.jpg"
+                    }, {
+                        name: "Atrociraptor",
+                        start: -68.5,
+                        end: -68.5,
+                        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Atrociraptor.jpg/320px-Atrociraptor.jpg"
+                    }
+
+                ]
+            }, {
+                name: " ",
+                branches: [{
+                    name: "Dromaeosaurinae",
+                    start: -139,
+                    end: -66,
+                    branches: [{
+                        name: "Dakotaraptor",
+                        start: -66,
+                        end: -66,
+                        image: "https://upload.wikimedia.org/wikipedia/commons/8/82/Dakotaraptor_wiki_%28white_background%29.jpg"
+                    }, {
+                        name: " ",
+                        branches: [{
+                            name: "Bayan Shireh dromaeosaurid",
+                            start: -96,
+                            end: -89
+                        }, {
+                            name: "Boreonykus",
+                            start: -73,
+                            end: -73,
+                            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Boreonykus_LM.jpg/320px-Boreonykus_LM.jpg"
+
+                        }, {
+                            name: "Dromaeosaurus",
+                            start: -76.5,
+                            end: -74.8,
+                            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Fred_Wierum_Dromaeosaurus.png/320px-Fred_Wierum_Dromaeosaurus.png"
+                        }]
+                    }]
+                }, {
+                    name: " ",
+                    branches: [{
+                        name: "Deinonychus",
+                        start: -115,
+                        end: -108,
+                        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fred_Wierum_Deinonychus.png/320px-Fred_Wierum_Deinonychus.png"
+                    }, {
+                        name: " ",
+                        branches: [{
+                            name: " ",
+                            branches: [{
+                                name: "Adasaurus",
+                                start: -70,
+                                end: -68,
+                                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Adasaurus_Restoration.jpg/320px-Adasaurus_Restoration.jpg"
+                            }, {
+                                name: " ",
+                                branches: [{
+                                    name: "Utahraptor",
+                                    start: -139,
+                                    end: -134.6,
+                                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Utahraptor_Restoration_%28flipped%29.png/320px-Utahraptor_Restoration_%28flipped%29.png"
+                                }, {
+                                    name: "Achillobator",
+                                    start: -96,
+                                    end: -89,
+                                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Achillobator_reconstruction_Flipped.png/320px-Achillobator_reconstruction_Flipped.png"
+                                }]
+                            }]
+                        }, {
+                            name: "Velociraptorinae",
+                            start: -143,
+                            end: -66,
+                            branches: [{
+                                name: "Acheroraptor",
+                                start: -66,
+                                end: -66,
+                                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Acheroraptor_NT_small.jpg/320px-Acheroraptor_NT_small.jpg"
+                            }, {
+                                name: " ",
+                                branches: [{
+                                    name: "Velociraptor mongoliensis",
+                                    start: -75,
+                                    end: -71,
+                                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Velociraptor_Restoration.png/320px-Velociraptor_Restoration.png"
+                                }, {
+                                    name: " ",
+                                    branches: [{
+                                        name: "Velociraptor osmolskae",
+                                        start: -75,
+                                        end: -71,
+                                        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Velociraptor_Restoration.png/320px-Velociraptor_Restoration.png"
+                                    }, {
+                                        name: " ",
+                                        branches: [{
+                                            name: "Dineobellator",
+                                            start: -67,
+                                            end: -67,
+                                            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Dineobellator_skeleton.png/320px-Dineobellator_skeleton.png"
+                                        }, {
+                                            name: " ",
+                                            branches: [{
+                                                name: "Tsaagan",
+                                                start: -75,
+                                                end: -75,
+                                                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Tsaagan_mangas.jpg/1280px-Tsaagan_mangas.jpg"
+                                            }, {
+                                                name: "Linheraptor",
+                                                start: -83.6,
+                                                end: -72.1,
+                                                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Linheraptor_skeletal.jpg/1920px-Linheraptor_skeletal.jpg"
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            }]
+        };
+
+        var tyrannosaur_tree = {
+            name: "Tyrannosauridae",
+            branches: [{
+                    name: "Albertosaurinae",
+                    start: -76.6,
+                    end: -68,
+                    branches: [{
+                        name: "Gorgosaurus",
+                        start: -76.6,
+                        end: -75.1
+                    }, {
+                        name: "Albertosaurus",
+                        start: -71,
+                        end: -68
+                    }]
+                }, {
+                    name: "Tyrannosaurinae",
+                    branches: [{
+                        name: "Alioramini",
+                        branches: [{
+                            name: "Qianzhousaurus",
+                            start: -72,
+                            end: -66
+
+                        }, {
+                            name: "",
+                            branches: [{
+                                name: "Alioramus remotus",
+                                start: -70,
+                                end: -70
+                            }, {
+                                name: "Alioramus altai",
+                                start: -70,
+                                end: -70
+                            }]
+                        }]
+                    }, {
+                        name: "",
+                        branches: [{
+                            name: "",
+                            branches: [{
+                                name: "Nanoqsaurus",
+                                start: -69.1,
+                                end: -69.1
+                            }, {
+                                name: "Teratopphoneus",
+                                start: -77,
+                                end: -76
+
+                            }]
+
+                        }, {
+                            name: "",
+                            branches: [{
+                                name: "Lythronax",
+                                start: -80.6,
+                                end: -79.9
+                            }, {
+                                name: "",
+                                branches: [{
+                                    name: "",
+                                    branches: [{
+                                        name: "Daspletosaurus torosus",
+                                        start: -77,
+                                        end: -74
+                                    }, {
+                                        name: "Daspletosaurus horneri",
+                                        start: -77,
+                                        end: -74
+                                    }]
+                                }, {
+                                    name: "",
+                                    branches: [{
+                                        name: "Zhuchengtyrannus",
+                                        start: -73.5,
+                                        end: -73.5
+                                    }, {
+                                        name: "",
+                                        branches: [{
+                                            name: "Tarbosaurus",
+                                            start: -70,
+                                            end: -70
+                                        }, {
+                                            name: "Tyrannosaurus",
+                                            start: -68,
+                                            end: -66
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
+
+                }
+
+            ]
+        };
+
+
+        var paraves_tree = {
+            name: "Paraves",
+            branches: [{
+                name: "",
+                branches: [{
+                    name: "Scansoriopterygidae",
+                    start: -165,
+                    end: -156
+                }, {
+                    name: "",
+                    branches: [{
+                        name: "Xiaotingia",
+                        start: -160,
+                        end: -160
+                    }, {
+                        name: "Yixianosaurus",
+                        start: -122,
+                        end: -122
+                    }]
+                }]
+            }, {
+                name: "",
+                branches: [{
+                    name: "",
+                    branches: [{
+                        name: "",
+                        branches: [{
+                            name: "Pedopenna",
+                            start: -164,
+                            end: -164
+                        }, {
+                            name: "Aurornis",
+                            start: -160,
+                            end: -160
+                        }]
+                    }, {
+                        name: "",
+                        branches: [{
+                            name: "Serikornis",
+                            start: -165,
+                            end: -162
+                        }, {
+                            name: "Eosinopteryx",
+                            start: -160,
+                            end: -160
+                        }]
+                    }]
+                }, {
+                    name: "Eumaniraptora",
+                    branches: [{
+                        name: "",
+                        branches: [{
+                            name: "Troodontidae",
+                            start: -150,
+                            end: -66
+                        }, {
+                            name: "",
+                            branches: [{
+                                name: "Dromaeosauridae",
+                                start: -143,
+                                end: -66
+                            }, {
+                                name: "",
+                                branches: [{
+                                    name: "Microraptoria",
+                                    start: -125,
+                                    end: -76.5
+                                }, {
+                                    name: "",
+                                    branches: [{
+                                        name: "Unenglagiidae",
+                                        start: -94,
+                                        end: -70
+                                    }, {
+                                        name: "",
+                                        branches: [{
+                                            name: "",
+                                            branches: [{
+                                                name: "Overoraptor",
+                                                start: -97,
+                                                end: -93
+                                            }, {
+                                                name: "Rahonavis",
+                                                start: -70,
+                                                end: -70
+                                            }]
+                                        }, {
+                                            name: "Avialae",
+                                            branches: [{
+                                                name: "Archaeopterygidae",
+                                                branches: [{
+                                                    name: "Alcmonavis",
+                                                    start: -150.8,
+                                                    end: -148.5
+                                                }, {
+                                                    name: "",
+                                                    branches: [{
+                                                        name: "Wellnhoferia",
+                                                        start: -150,
+                                                        end: -150
+                                                    }, {
+                                                        name: "Archaeopteryx",
+                                                        start: -150.8,
+                                                        end: -148.5
+                                                    }]
+                                                }]
+                                            }, {
+                                                name: "",
+                                                branches: [{
+                                                    name: "Anchiornithidae",
+                                                    branches: [{
+                                                        name: "Xiaotingia",
+                                                        start: -160,
+                                                        end: -160
+                                                    }, {
+                                                        name: "Achiornis",
+                                                        start: -160.89,
+                                                        end: -160.25
+                                                    }]
+                                                }, {
+                                                    name: "",
+                                                    branches: [{
+                                                        name: "Jeholornis",
+                                                        start: -122,
+                                                        end: -120
+
+                                                    }, {
+                                                        name: "Pygostylia",
+                                                        branches: [{
+                                                            name: "Confuciusornis",
+                                                            start: -125,
+                                                            end: -120
+                                                        }, {
+                                                            name: "",
+                                                            branches: [{
+                                                                name: "Chongmingia",
+                                                                start: -125,
+                                                                end: -113
+                                                            }, {
+                                                                name: "Ornithothoraces",
+                                                                start: -131,
+                                                                end: 0
+                                                            }]
+                                                        }]
+                                                    }]
+                                                }]
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            }]
+
+                        }]
+                    }]
+                }]
+            }]
+        };
+
+
+
+
+        /*
+        name: "",
+        branches: [{
+            name: "Achiornis",
+            start: -160.89,
+            end: -160.25
+        }, {
+            name: "Eumaniraptora",
+            branches: [{
+                name: "",
+                branches: [{
+                    name: "Troodontidae",
+                    start: -150,
+                    end: -66
+                }, {
+                    name: "Dromaeosauridae",
+                    start: -143,
+                    end: -66
+                }]
+            }, {
+                name: "Avialae",
+                start: -155,
+                end: 0,
+                branches: [{
+                    name: "Archaeopteryx",
+                    start: -150.8,
+                    end: -148.5
+                }, {
+                    name: "",
+                    branches: [{
+                        name: "",
+                        branches: [{
+                            name: "Rahonavis",
+                            start:-70,
+                            end:-70
+                        }, {
+                            name: "Jeholornis",
+                            start:-122,
+                            end:-120
+                        }]
+                    }, {
+                        name: "Euavialae",
+                        branches: [{
+                            name: "Jixiangornis",
+                            start:-124.5,
+                            end:-124.5
+                        }, {
+                            name: "Avebrevicauda",
+                            start: -131,
+                            end: 0,
+                            branches: [{
+                                name: "Sapeornis",
+                                start: -124.5,
+                                end: -120
+                            }, {
+                                name: "Pygostylia",
+                                branches: [{
+                                    name: "Confuciusornis",
+                                    start: -125,
+                                    end: -120
+                                }, {
+                                    name: "",
+                                    branches: [{
+                                        name: "Chongmingia",
+                                        start: -125,
+                                        end: -113
+                                    }, {
+                                        name: "Ornithothoraces",
+                                        start: -131,
+                                        end: 0
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            }]
+ 
+        }]
+    }]
+}]
+}*/
+
+        function render() {
+            let p = document.getElementById("periods");
+            let t = document.getElementById("tree");
+            let s = document.getElementById("style");
+            let title = document.getElementById("diagramTitle");
+            let start = document.getElementById("diagramTimelineStart");
+            let end = document.getElementById("diagramTimelineEnd");
+
+            var diagram = new timeline(title.value, JSON.parse(p.value), JSON.parse(t.value), start.value, end.value, JSON.parse(s.value));
+            diagram.draw();
+        }
+
+        function toggle(id) {
+            let node = document.getElementById(id);
+            if (node.classList.contains("hidden")) {
+                node.classList.remove("hidden");
+            } else {
+                node.classList.add("hidden");
+            }
+        }
+
+        function download() {
+            const dataUrl = document.getElementById("timeline").toDataURL("png");
+            const win = window.open(dataUrl, '_blank');
+        }
+
+        function setExampleDromaeosaurs() {
+            document.getElementById("diagramTitle").value = "Dromaeosaurs";
+            document.getElementById("diagramTimelineStart").value = -150;
+            document.getElementById("diagramTimelineEnd").value = -50;
+            document.getElementById("diagramUnits").value = "Ma";
+            document.getElementById("periods").value = JSON.stringify(periods, null, 1);
+            document.getElementById("tree").value = JSON.stringify(dromaeosaur_tree, null, 1);
+            document.getElementById("style").value = JSON.stringify(style, null, 1);
+        }
+
+        function setExampleTyrannosaurs() {
+            document.getElementById("diagramTitle").value = "Tyrannosaurs";
+            document.getElementById("diagramTimelineStart").value = -150;
+            document.getElementById("diagramTimelineEnd").value = -50;
+            document.getElementById("diagramUnits").value = "Ma";
+            document.getElementById("periods").value = JSON.stringify(periods, null, 1);
+            document.getElementById("tree").value = JSON.stringify(tyrannosaur_tree, null, 1);
+            document.getElementById("style").value = JSON.stringify(style, null, 1);
+        }
+
+        function setExampleParaves() {
+            document.getElementById("diagramTitle").value = "Paraves";
+            document.getElementById("diagramTimelineStart").value = -200;
+            document.getElementById("diagramTimelineEnd").value = 0;
+            document.getElementById("diagramUnits").value = "Ma";
+            document.getElementById("periods").value = JSON.stringify(periods, null, 1);
+            document.getElementById("tree").value = JSON.stringify(paraves_tree, null, 1);
+            document.getElementById("style").value = JSON.stringify(style, null, 1);
+        }
+    </script>
+</head>
+
+<body>
+
+    <header id="header">
+
+    </header>
+    <main id="content">
+        <h1>
+            Tree - Timeline Generator
+        </h1>
+        <div class="form-group">
+            <label for="diagramTitle">Diagram Title</label>
+            <input id="diagramTitle" type="text" value="Dromaeosaurs">
+        </div>
+        <div class="form-group">
+            <label for="diagramTimelineStart">Timeline Start</label>
+            <input id="diagramTimelineStart" type="number" value="-150">
+        </div>
+        <div class="form-group">
+            <label for="diagramTimelineEnd">Timeline End</label>
+            <input id="diagramTimelineEnd" type="number" value="-50">
+        </div>
+        <div class="form-group">
+            <label for="diagramTimelineEnd">Units</label>
+            <input id="diagramUnits" type="text" value="Ma">
+        </div>
+        <div class="form-group" id="settingsAccordion">
+            <button type="button" onclick="toggle('periods')">Periods +</button>
+            <textarea id="periods" class="hidden"></textarea>
+            <button type="button" onclick="toggle('tree')">Tree +</button>
+            <textarea id="tree" class="hidden"></textarea>
+            <button type="button" onclick="toggle('style')">Style +</button>
+            <textarea id="style" class="hidden"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Examples:</label>
+            <button type="button" onclick="setExampleDromaeosaurs()">Dromaeosaurs</button>
+            <button type="button" onclick="setExampleTyrannosaurs()">Tyrannosaurs</button>
+            <button type="button" onclick="setExampleParaves()">Paraves</button>
+        </div>
+
+        <small id="help" class="form-text text-muted">Click refresh to redraw the diagram</small>
+        <input type="button" value="Refresh" onclick="render()">
+        <small>
+            version 0.1a
+        </small>
+
+
+    </main>
+    <canvas id="timeline" onclick="download()" width="1800px"></canvas>
+    <footer id="footer">
+        <div id="copyright">2020 hacked.design</div>
+    </footer>
+
+    <script>
+        setExampleDromaeosaurs();
+        render();
+    </script>
+</body>
+
+</html>
