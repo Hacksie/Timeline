@@ -30,7 +30,7 @@ var style = {
     branchOutlineDash: [4, 2],
     diagramTitleHeight: 40,
     treeLevelWidth: 100,
-    treeBranchHeight: 40,
+    treeBranchHeight: 50,
     timelineWidth: 1000,
     timelineBoxHeight: 20,
     timelineAxisLabelHeight: 40,
@@ -48,7 +48,7 @@ var style = {
 };
 
 class timeline {
-    constructor(title, periods, tree, start, end, style) {
+    constructor(title, periods, tree, start, end, units, style) {
         this.canvas = this.getCanvas();
         this.context = this.canvas.getContext("2d");
         this.context.lineWidth = 1;
@@ -58,6 +58,7 @@ class timeline {
         this.tree = tree;
         this.start = start;
         this.end = end;
+        this.units = units;
         this.style = style;
         this.timelineRect = new rect(this.style.padding, this.style.padding + this.style.diagramTitleHeight, this.canvas.width - this.style.padding, this.canvas.height - 100 - this.style.padding);
         this.treeRect = new rect(this.style.padding, this.style.padding + this.style.diagramTitleHeight, this.canvas.width - (2 * this.style.padding), this.canvas.height - 100 - this.style.padding);
@@ -78,7 +79,7 @@ class timeline {
         this.context.textAlign = "center";
         this.context.font = this.style.titleFont;
         this.context.fillStyle = this.style.titleFontColor;
-        this.context.fillText(this.diagramTitle, this.canvas.width / 2, this.style.padding + (this.style.diagramTitleHeight / 2));
+        this.context.fillText(this.diagramTitle + " (" + this.start + this.units + " to " + this.end + this.units + ")", this.canvas.width / 2, this.style.padding + (this.style.diagramTitleHeight / 2));
     }
 
     drawAreaOutline(r) {
@@ -188,7 +189,7 @@ class timeline {
     }
 
     drawTimelineTreeOutlineBox(top, start, end, height, hue) {
-        const r = new rect(this.timelineRect.x + Math.round(this.timelineRect.w * start), Math.round(this.treeRect.y + (top * this.style.treeBranchHeight)), Math.round(this.timelineRect.w * end - (this.timelineRect.w * start)) + 1, Math.round(height * this.style.treeBranchHeight));
+        const r = new rect(this.timelineRect.x + Math.round(this.timelineRect.w * start), Math.round(this.treeRect.y + (top * this.style.treeBranchHeight)), Math.round(this.timelineRect.w * end - (this.timelineRect.w * start)), Math.round(height * this.style.treeBranchHeight));
         this.context.strokeStyle = this.style.branchOutlineStrokeColor;
         const old = this.context.getLineDash();
         this.context.setLineDash(this.style.branchOutlineDash);

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>hacked.design - Tree - Timeline Generator</title>
+    <title>hacked.design - Prehistoric Tree - Timeline Generator</title>
     <meta http-equiv="Content-Type" content="text/html;" charset="utf-8">
 
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
@@ -63,6 +63,10 @@
             name: "Neogene",
             start: -23.03,
             end: -2.58
+        }, {
+            name: "Quaternary",
+            start: -2.58,
+            end: 0
         }];
 
         var dromaeosaur_tree = {
@@ -345,6 +349,8 @@
                     }]
                 }, {
                     name: "Eumaniraptora",
+                    start: -165,
+                    end: 0,
                     branches: [{
                         name: "",
                         branches: [{
@@ -356,7 +362,8 @@
                             branches: [{
                                 name: "Dromaeosauridae",
                                 start: -143,
-                                end: -66
+                                end: -66,
+                                image: ""
                             }, {
                                 name: "",
                                 branches: [{
@@ -367,8 +374,19 @@
                                     name: "",
                                     branches: [{
                                         name: "Unenglagiidae",
-                                        start: -94,
-                                        end: -70
+                                        branches: [{
+                                            name: "Austroraptor",
+                                            start: -78,
+                                            end: -66
+                                        }, {
+                                            name: "Buitreraptor",
+                                            start: -94,
+                                            end: -94
+                                        }, {
+                                            name: "Unenlagia",
+                                            start: -89,
+                                            end: -89
+                                        }]
                                     }, {
                                         name: "",
                                         branches: [{
@@ -384,6 +402,8 @@
                                             }]
                                         }, {
                                             name: "Avialae",
+                                            start: -155,
+                                            end: 0,
                                             branches: [{
                                                 name: "Archaeopterygidae",
                                                 branches: [{
@@ -399,7 +419,8 @@
                                                     }, {
                                                         name: "Archaeopteryx",
                                                         start: -150.8,
-                                                        end: -148.5
+                                                        end: -148.5,
+                                                        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg/177px-Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg"
                                                     }]
                                                 }]
                                             }, {
@@ -455,91 +476,6 @@
         };
 
 
-
-
-        /*
-        name: "",
-        branches: [{
-            name: "Achiornis",
-            start: -160.89,
-            end: -160.25
-        }, {
-            name: "Eumaniraptora",
-            branches: [{
-                name: "",
-                branches: [{
-                    name: "Troodontidae",
-                    start: -150,
-                    end: -66
-                }, {
-                    name: "Dromaeosauridae",
-                    start: -143,
-                    end: -66
-                }]
-            }, {
-                name: "Avialae",
-                start: -155,
-                end: 0,
-                branches: [{
-                    name: "Archaeopteryx",
-                    start: -150.8,
-                    end: -148.5
-                }, {
-                    name: "",
-                    branches: [{
-                        name: "",
-                        branches: [{
-                            name: "Rahonavis",
-                            start:-70,
-                            end:-70
-                        }, {
-                            name: "Jeholornis",
-                            start:-122,
-                            end:-120
-                        }]
-                    }, {
-                        name: "Euavialae",
-                        branches: [{
-                            name: "Jixiangornis",
-                            start:-124.5,
-                            end:-124.5
-                        }, {
-                            name: "Avebrevicauda",
-                            start: -131,
-                            end: 0,
-                            branches: [{
-                                name: "Sapeornis",
-                                start: -124.5,
-                                end: -120
-                            }, {
-                                name: "Pygostylia",
-                                branches: [{
-                                    name: "Confuciusornis",
-                                    start: -125,
-                                    end: -120
-                                }, {
-                                    name: "",
-                                    branches: [{
-                                        name: "Chongmingia",
-                                        start: -125,
-                                        end: -113
-                                    }, {
-                                        name: "Ornithothoraces",
-                                        start: -131,
-                                        end: 0
-                                    }]
-                                }]
-                            }]
-                        }]
-                    }]
-                }]
-            }]
- 
-        }]
-    }]
-}]
-}*/
-
         function render() {
             let p = document.getElementById("periods");
             let t = document.getElementById("tree");
@@ -547,8 +483,9 @@
             let title = document.getElementById("diagramTitle");
             let start = document.getElementById("diagramTimelineStart");
             let end = document.getElementById("diagramTimelineEnd");
+            let units = document.getElementById("diagramUnits");
 
-            var diagram = new timeline(title.value, JSON.parse(p.value), JSON.parse(t.value), start.value, end.value, JSON.parse(s.value));
+            var diagram = new timeline(title.value, JSON.parse(p.value), JSON.parse(t.value), start.value, end.value, units.value, JSON.parse(s.value));
             diagram.draw();
         }
 
@@ -574,6 +511,7 @@
             document.getElementById("periods").value = JSON.stringify(periods, null, 1);
             document.getElementById("tree").value = JSON.stringify(dromaeosaur_tree, null, 1);
             document.getElementById("style").value = JSON.stringify(style, null, 1);
+            render();
         }
 
         function setExampleTyrannosaurs() {
@@ -584,6 +522,7 @@
             document.getElementById("periods").value = JSON.stringify(periods, null, 1);
             document.getElementById("tree").value = JSON.stringify(tyrannosaur_tree, null, 1);
             document.getElementById("style").value = JSON.stringify(style, null, 1);
+            render();
         }
 
         function setExampleParaves() {
@@ -594,6 +533,7 @@
             document.getElementById("periods").value = JSON.stringify(periods, null, 1);
             document.getElementById("tree").value = JSON.stringify(paraves_tree, null, 1);
             document.getElementById("style").value = JSON.stringify(style, null, 1);
+            render();
         }
     </script>
 </head>
@@ -605,7 +545,7 @@
     </header>
     <main id="content">
         <h1>
-            Tree - Timeline Generator
+            Prehistoric Tree - Timeline Generator
         </h1>
         <div class="form-group">
             <label for="diagramTitle">Diagram Title</label>
@@ -654,7 +594,6 @@
 
     <script>
         setExampleDromaeosaurs();
-        render();
     </script>
 </body>
 
