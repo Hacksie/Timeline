@@ -1,3 +1,5 @@
+/* Copyright (c) 2020 - hacked.design - Ben Wise */
+
 'use strict';
 
 class point {
@@ -26,6 +28,7 @@ var style = {
     padding: 20,
     diagramAreaBorderColor: "lightgray",
     treeLineStrokeColor: "black",
+    drawBranchOutlines: true,
     branchOutlineStrokeColor: "lightslategrey",
     branchOutlineDash: [4, 2],
     diagramTitleHeight: 40,
@@ -39,12 +42,14 @@ var style = {
     fillLight: 0.75,
     strokeSaturation: 0.5,
     strokeLight: 0.25,
-    showPeriodAreas: false,
+    showPeriodBackground: false,
+    showPeriodLines: false,
     periodSaturation: 0.5,
     periodLight: 0.9,
     drawImages: true,
     imageMaxWidth: 100,
-    drawAreaOutlines: true
+    drawAreaOutlines: true,
+    drawOffTimelineArrows: true
 };
 
 class timeline {
@@ -52,10 +57,10 @@ class timeline {
         this.canvas = this.getCanvas();
         this.context = this.canvas.getContext("2d");
         this.context.lineWidth = 1;
-
         this.diagramTitle = title;
         this.periods = periods;
-        this.tree = tree;
+        this.treeArray = tree;
+        this.tree = {};
         this.start = start;
         this.end = end;
         this.units = units;
@@ -63,8 +68,7 @@ class timeline {
         this.timelineRect = new rect(this.style.padding, this.style.padding + this.style.diagramTitleHeight, this.canvas.width - this.style.padding, this.canvas.height - 100 - this.style.padding);
         this.treeRect = new rect(this.style.padding, this.style.padding + this.style.diagramTitleHeight, this.canvas.width - (2 * this.style.padding), this.canvas.height - 100 - this.style.padding);
         this.timelineAxisTop = this.timelineRect.y + this.timelineRect.height + this.style.padding;
-
-        //Todo: Align the leaf line alone the bottom edge to allow room to grow upward for images
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     getCanvas() {
@@ -97,9 +101,18 @@ class timeline {
         this.context.fillStyle = this.style.timelineLabelFontColor;
         this.context.textAlign = "center";
         this.context.fillText(name, r.x + (r.w / 2), r.y + (r.h / 2));
-        if (this.style.showPeriodAreas) {
+        if (this.style.showPeriodBackground) {
             this.context.fillStyle = this.hsl(hue, this.style.periodSaturation, this.style.periodLight);
             this.context.fillRect(r.x, this.timelineRect.y, r.w, this.timelineRect.h);
+        }
+
+        if (this.style.showPeriodLines) {
+            this.context.strokeStyle = this.hsl(hue, this.style.strokeSaturation, this.style.strokeLight);
+            this.context.beginPath();
+            this.context.moveTo(r.x, this.timelineRect.y);
+            this.context.lineTo(r.x, this.timelineRect.y + this.timelineRect.h);
+            this.context.strokeStyle = this.style.branchOutlineStrokeColor;
+            this.context.stroke();
         }
     }
 
@@ -107,6 +120,7 @@ class timeline {
         const p1 = new point(Math.round(this.treeRect.x + (treeLevel * this.style.treeLevelWidth)), Math.round(this.treeRect.y + (top * this.style.treeBranchHeight) + ((height * this.style.treeBranchHeight) / 2)));
         const p2 = new point(p1.x + this.style.treeLevelWidth, p1.y);
         this.context.strokeStyle = this.style.treeLineStrokeColor;
+        this.context.beginPath();
         this.context.moveTo(p1.x, p1.y);
         this.context.lineTo(p2.x, p2.y);
         this.context.stroke();
@@ -116,16 +130,81 @@ class timeline {
         this.context.fillText(name, p1.x + 5, p1.y - 5);
     }
 
-    drawTreeLeaf(name, top, treeLevel, start, end, height, hue, src) {
-        var x1 = this.treeRect.x + (treeLevel * this.style.treeLevelWidth);
-        var x2 = x1 + this.style.treeLevelWidth;
-        var y1 = Math.round(this.treeRect.y + (top * this.style.treeBranchHeight));
-        var y2 = Math.round(height * this.style.treeBranchHeight);
-        var y3 = y1 + Math.round((height * this.style.treeBranchHeight) / 2);
-        var startx = Math.round(this.timelineRect.w * start);
-        var endx = Math.round(this.timelineRect.w * end - startx);
+    drawTreeLeafUnknown(name, top, treeLevel, height, src) {
+        const x1 = this.treeRect.x + (treeLevel * this.style.treeLevelWidth);
+        //var x2 = x1 + this.style.treeLevelWidth;
+        const y1 = Math.round(this.treeRect.y + (top * this.style.treeBranchHeight));
+        //var y2 = Math.round(height * this.style.treeBranchHeight);
+        const y3 = y1 + Math.round((height * this.style.treeBranchHeight) / 2);
 
         this.context.strokeStyle = this.style.treeLineStrokeColor;
+        this.context.beginPath();
+        this.context.moveTo(x1, y3);
+        this.context.lineTo(this.timelineRect.x, y3);
+        this.context.stroke();
+
+        this.context.font = this.style.font;
+        this.context.fillStyle = this.style.fontColor;
+
+        switch (this.style.alignLeafLabel) {
+            case "right":
+                this.context.textAlign = "right";
+                this.context.fillText(name, this.timelineRect.x - 5, y3 - 5);
+                break;
+            case "left":
+                this.context.textAlign = "left";
+                this.context.fillText(name, x1 + 5, y3 - 5);
+                break;
+            case "center":
+                this.context.textAlign = "center";
+                this.context.fillText(name, (x1 + this.timelineRect.x) / 2, y3 - 5);
+                break;
+        }
+
+        this.context.textAlign = "left";
+        this.context.fillText("?", this.timelineRect.x + 5, y3);
+
+        // if (this.style.drawImages) {
+        //     this.drawLeafImage(this.timelineRect.x + 15, y1, this.style.treeBranchHeight, src);
+        // }
+    }
+
+    drawTreeLeaf(name, top, treeLevel, start, end, height, hue, src) {
+        const x1 = this.treeRect.x + (treeLevel * this.style.treeLevelWidth);
+        //var x2 = x1 + this.style.treeLevelWidth;
+        const y1 = Math.round(this.treeRect.y + (top * this.style.treeBranchHeight));
+        const y2 = Math.round(height * this.style.treeBranchHeight);
+        const y3 = y1 + Math.round((height * this.style.treeBranchHeight) / 2);
+
+        let startArrow = false;
+        let endArrow = false;
+
+        if (start < 0) {
+            startArrow = true;
+            start = 0;
+        }
+
+        if (end < 0) {
+            startArrow = true;
+            end = 0;
+        }
+
+        if (start > 1) {
+            start = 1;
+            endArrow = true;
+        }
+
+        if (end > 1) {
+            end = 1;
+            endArrow = true;
+        }
+
+
+        const startx = Math.round(this.timelineRect.w * start);
+        const endx = Math.round(this.timelineRect.w * end - startx);
+
+        this.context.strokeStyle = this.style.treeLineStrokeColor;
+        this.context.beginPath();
         this.context.moveTo(x1, y3);
         this.context.lineTo(this.timelineRect.x + startx, y3);
         this.context.stroke();
@@ -154,8 +233,26 @@ class timeline {
         this.context.fillRect(this.timelineRect.x + startx, y1 + (y2 / 2) - (this.style.timelineBoxHeight / 2), endx, this.style.timelineBoxHeight);
         this.context.strokeRect(this.timelineRect.x + startx, y1 + (y2 / 2) - (this.style.timelineBoxHeight / 2), endx, this.style.timelineBoxHeight);
 
-        if (this.style.drawImages) {
-            this.drawLeafImage(this.timelineRect.x + startx + endx + 10, y1, this.style.treeBranchHeight, src);
+        if (startArrow) {
+            this.context.strokeStyle = this.style.treeLineStrokeColor;
+            this.context.beginPath();
+            this.context.moveTo(this.timelineRect.x + 7, y3 - 5);
+            this.context.lineTo(this.timelineRect.x + 2, y3);
+            this.context.lineTo(this.timelineRect.x + 7, y3 + 5);
+            this.context.stroke();
+        }
+
+        if (endArrow) {
+            this.context.strokeStyle = this.style.treeLineStrokeColor;
+            this.context.beginPath();
+            this.context.moveTo(this.timelineRect.x + this.timelineRect.w - 7, y3 - 5);
+            this.context.lineTo(this.timelineRect.x + this.timelineRect.w - 2, y3);
+            this.context.lineTo(this.timelineRect.x + this.timelineRect.w - 7, y3 + 5);
+            this.context.stroke();
+        }
+
+        if (this.style.drawImages && !endArrow) {
+            this.drawLeafImage(this.timelineRect.x + startx + endx + 15, y1, this.style.treeBranchHeight, src);
         }
     }
 
@@ -164,6 +261,7 @@ class timeline {
             let img = new Image();
             img.crossOrigin = '';
             img.addEventListener('load', () => {
+
                 let canvasRatio = (this.style.imageMaxWidth / maxHeight);
                 if ((img.width / img.height) < canvasRatio) {
                     let newWidth = maxHeight * img.width / img.height;
@@ -183,6 +281,7 @@ class timeline {
         const p1 = new point(Math.round(this.treeRect.x + ((treeLevel + 1) * this.style.treeLevelWidth)), Math.round(this.treeRect.y + (top * this.style.treeBranchHeight)));
         const p2 = new point(p1.x, Math.round(p1.y + (height * this.style.treeBranchHeight)));
         this.context.strokeStyle = this.style.treeLineStrokeColor;
+        this.context.beginPath();
         this.context.moveTo(p1.x, p1.y);
         this.context.lineTo(p2.x, p2.y);
         this.context.stroke();
@@ -204,7 +303,7 @@ class timeline {
         let branchVertBottom = 0;
         let branchHeight = this.calcBranchHeight(branch);
 
-        if (typeof branch.branches !== 'undefined') {
+        if (typeof branch.branches !== 'undefined' && branch.branches.length > 0) {
             this.drawTreeBranch(branch.name, top, treeLevel, branchHeight);
             for (let i = 0; i < branch.branches.length; i++) {
                 branchTop += nextHeight;
@@ -219,37 +318,47 @@ class timeline {
             }
             this.drawTreeBranchVert(branchVertTop, branchVertBottom, treeLevel);
 
-            if (typeof branch.start !== 'undefined') {
+            if (this.style.drawBranchOutlines && typeof branch.start !== 'undefined') {
                 let pstart = Math.max(this.calcTimelinePercent(branch.start), 0);
                 let pend = Math.min(this.calcTimelinePercent(branch.end), 1);
-                if (typeof branch.branches !== 'undefined') {
-                    this.drawTimelineTreeOutlineBox(top, pstart, pend, branchHeight, top / totalTreeHeight * 360);
-                }
+                this.drawTimelineTreeOutlineBox(top, pstart, pend, branchHeight, top / totalTreeHeight * 360);
             }
         } else {
-            let pstart = 0;
-            let pend = 0;
-            if (typeof branch.start !== 'undefined') {
-                pstart = Math.max(this.calcTimelinePercent(branch.start), 0);
-                pend = Math.min(this.calcTimelinePercent(branch.end), 1);
-            }
+            if (typeof branch.start === 'undefined') {
+                this.drawTreeLeafUnknown(branch.name, top, treeLevel, branchHeight, branch.image);
+            } else {
+                let pstart = this.calcTimelinePercent(branch.start);
+                let pend = this.calcTimelinePercent(branch.end);
 
-            this.drawTreeLeaf(branch.name, top, treeLevel, pstart, pend, branchHeight, top / totalTreeHeight * 360, branch.image);
+                //pstart = Math.max(this.calcTimelinePercent(branch.start), 0);
+                //pend = Math.min(this.calcTimelinePercent(branch.end), 1);
+
+
+                this.drawTreeLeaf(branch.name, top, treeLevel, pstart, pend, branchHeight, top / totalTreeHeight * 360, branch.image);
+            }
         }
 
         return branchHeight;
     }
 
     calcBranchHeight(branch) {
-        return typeof branch.branches !== 'undefined' ? branch.branches.reduce((height, b) => {
-            return height + this.calcBranchHeight(b);
-        }, 0) : 1;
+        let height = 0;
+
+        if (typeof branch.branches !== 'undefined' && branch.branches.length > 0) {
+            for (let i = 0; i < branch.branches.length; i++) {
+                height += this.calcBranchHeight(branch.branches[i]);
+            }
+        } else {
+            height = 1;
+        }
+
+        return height;
     };
 
     calcBranchDepth(branch) {
         let childDepth = 0;
 
-        if (typeof branch.branches !== 'undefined') {
+        if (typeof branch.branches !== 'undefined' && branch.branches.length > 0) {
             for (let i = 0; i < branch.branches.length; i++) {
                 childDepth = Math.max(childDepth, this.calcBranchDepth(branch.branches[i]));
             }
@@ -277,6 +386,8 @@ class timeline {
     resizeDrawingAreas() {
         const treeDepth = this.calcBranchDepth(this.tree);
         const treeHeight = this.calcBranchHeight(this.tree);
+        console.log('depth', treeDepth);
+        console.log('height', treeHeight);
         this.treeRect.w = this.style.treeLevelWidth * treeDepth;
         this.treeRect.h = treeHeight * this.style.treeBranchHeight + (2 * this.style.padding);
         this.timelineRect.x = this.treeRect.x + this.treeRect.w + this.style.padding;
@@ -290,7 +401,34 @@ class timeline {
         return treeHeight;
     }
 
+    constructTree() {
+        let map = {};
+        var roots = [];
+
+        for (let i = 0; i < this.treeArray.length; i++) {
+
+            map[this.treeArray[i].id] = i;
+            this.treeArray[i].branches = [];
+        }
+
+        for (let i = 0; i < this.treeArray.length; i++) {
+            let node = this.treeArray[i];
+            if (node.parent !== "") {
+                this.treeArray[map[node.parent]].branches.push(node);
+            } else {
+                roots.push(node);
+            }
+        }
+        return roots;
+    }
+
     draw() {
+        let roots = this.constructTree();
+        if (roots.length == 0) {
+            console.log("No tree root found");
+            return;
+        }
+        this.tree = roots[0];
         const treeHeight = this.resizeDrawingAreas();
         this.context.fillStyle = "white";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);

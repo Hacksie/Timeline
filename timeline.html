@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>hacked.design - Prehistoric Tree - Timeline Generator</title>
+
+    <meta name="description" content="Prehistoric Tree to Timeline Image Generator">
+    <meta name="author" content="hacked.design">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header id="header">
+
+    </header>
+    <main id="content">
+        <h1>
+            Prehistoric Tree - Timeline Generator
+        </h1>
+        <div class="form-group">
+            <label for="diagramTitle">Diagram Title</label>
+            <input id="diagramTitle" type="text" value="Dromaeosaurs">
+        </div>
+        <div class="form-group">
+            <label for="diagramTimelineStart">Timeline Start</label>
+            <input id="diagramTimelineStart" type="number" value="-150">
+        </div>
+        <div class="form-group">
+            <label for="diagramTimelineEnd">Timeline End</label>
+            <input id="diagramTimelineEnd" type="number" value="-50">
+        </div>
+        <div class="form-group">
+            <label for="diagramTimelineEnd">Units</label>
+            <input id="diagramUnits" type="text" value="Ma">
+        </div>
+        <div class="form-group" id="settingsAccordion">
+            <button type="button" onclick="toggle('periods')">+ Periods</button>
+            <textarea id="periods" class="hidden"></textarea>
+            <button type="button" onclick="toggle('tree')">+ Tree</button>
+            <textarea id="tree" class="hidden"></textarea>
+            <button type="button" onclick="toggle('style')">+ Style</button>
+            <textarea id="style" class="hidden"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Examples:</label>
+            <button type="button" onclick="setExampleDromaeosaurs()">Dromaeosaurs</button>
+            <button type="button" onclick="setExampleTyrannosaurs()">Tyrannosaurs</button>
+            <button type="button" onclick="setExampleParaves()">Paraves</button>
+        </div>
+
+        <small id="help" class="form-text text-muted">Click refresh to redraw the diagram</small>
+        <input type="button" value="Refresh" onclick="render()" class="primary">
+        <small>
+            version 0.2a
+        </small>
+
+
+    </main>
+    <canvas id="timeline" onclick="download()" width="1800px"></canvas>
+    <footer id="footer">
+        <div id="copyright">2020 <span class="corp-blue">hacked</span>.<span class="corp-yellow">design</span></div>
+    </footer>
+    <script src="timeline.js"></script>
+    <script>
+        'use strict';
+        var timeStart = -200;
+        var timeEnd = -50;
+
+        var periods = [{
+            "name": "Precambrian",
+            "start": -4600,
+            "end": -541
+        }, {
+            "name": "Cambrian",
+            "start": -541,
+            "end": -485.4
+        }, {
+            "name": "Ordovician",
+            "start": -485.4,
+            "end": -443.8
+        }, {
+            "name": "Silurian",
+            "start": -443.8,
+            "end": -419.2
+        }, {
+            "name": "Devonian",
+            "start": -419.2,
+            "end": -358.9
+        }, {
+            "name": "Carboniferous",
+            "start": -358.9,
+            "end": -298.9
+        }, {
+            "name": "Permian",
+            "start": -298.9,
+            "end": -251.9
+        }, {
+            "name": "Triassic",
+            "start": -251.9,
+            "end": -201.3
+        }, {
+            "name": "Jurassic",
+            "start": -201.3,
+            "end": -145.0
+        }, {
+            "name": "Cretaceous",
+            "start": -145,
+            "end": -66
+        }, {
+            "name": "Paleogene",
+            "start": -66,
+            "end": -23.03
+        }, {
+            "name": "Neogene",
+            "start": -23.03,
+            "end": -2.58
+        }, {
+            "name": "Quaternary",
+            "start": -2.58,
+            "end": 0
+        }];
+
+        var dromaeosaur_tree = [{
+            "parent": "",
+            "id": "Eudromaeosauria",
+            "name": "Eudromaeosauria"
+        }, {
+            "parent": "Eudromaeosauria",
+            "id": "Saurornitholestinae",
+            "name": "Saurornitholestinae",
+            "start": -77,
+            "end": -68,
+        }, {
+            "parent": "Saurornitholestinae",
+            "id": "Saurornitholestes",
+            "name": "Saurornitholestes",
+            "start": -77,
+            "end": -69,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Saurornitholestes_MOR1.jpg"
+        }, {
+            "parent": "Saurornitholestinae",
+            "id": "Atrociraptor",
+            "name": "Atrociraptor",
+            "start": -68.5,
+            "end": -68.5,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Atrociraptor.jpg/320px-Atrociraptor.jpg"
+        }, {
+            "parent": "Eudromaeosauria",
+            "id": "1",
+            "name": "",
+        }, {
+            "parent": "1",
+            "id": "Dromaeosaurinae",
+            "name": "Dromaeosaurinae",
+            "start": -139,
+            "end": -66,
+        }, {
+            "parent": "Dromaeosaurinae",
+            "id": "Dakotaraptor",
+            "name": "Dakotaraptor",
+            "start": -66,
+            "end": -66,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/8/82/Dakotaraptor_wiki_%28white_background%29.jpg"
+        }, {
+            "parent": "Dromaeosaurinae",
+            "id": "2",
+            "name": "",
+        }, {
+            "parent": "2",
+            "id": "Bayan Shireh dromaeosaurid",
+            "name": "Bayan Shireh dromaeosaurid",
+            "start": -96,
+            "end": -89
+        }, {
+            "parent": "2",
+            "id": "Boreonykus",
+            "name": "Boreonykus",
+            "start": -73,
+            "end": -73,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Boreonykus_LM.jpg/320px-Boreonykus_LM.jpg"
+
+        }, {
+            "parent": "2",
+            "id": "Boreonykus",
+            "name": "Dromaeosaurus",
+            "start": -76.5,
+            "end": -74.8,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Fred_Wierum_Dromaeosaurus.png/320px-Fred_Wierum_Dromaeosaurus.png"
+        }, {
+            "parent": "1",
+            "id": "Velociraptorinae",
+            "name": "Velociraptorinae",
+            "start": -143,
+            "end": -66
+        }, {
+            "parent": "Velociraptorinae",
+            "id": "Deinonychus",
+            "name": "Deinonychus",
+            "start": -115,
+            "end": -108,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Fred_Wierum_Deinonychus.png/320px-Fred_Wierum_Deinonychus.png"
+        }, {
+            "parent": "Velociraptorinae",
+            "id": "4",
+            "name": ""
+        }, {
+            "parent": "4",
+            "id": "5",
+            "name": ""
+        }, {
+            "parent": "4",
+            "id": "6",
+            "name": ""
+        }, {
+            "parent": "5",
+            "id": "Adasaurus",
+            "name": "Adasaurus",
+            "start": -70,
+            "end": -68,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Adasaurus_Restoration.jpg/320px-Adasaurus_Restoration.jpg"
+        }, {
+            "parent": "5",
+            "id": "7",
+            "name": ""
+        }, {
+            "parent": "7",
+            "id": "Utahraptor",
+            "name": "Utahraptor",
+            "start": -139,
+            "end": -134.6,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Utahraptor_Restoration_%28flipped%29.png/320px-Utahraptor_Restoration_%28flipped%29.png"
+        }, {
+            "parent": "7",
+            "id": "Achillobator",
+            "name": "Achillobator",
+            "start": -96,
+            "end": -89,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Achillobator_reconstruction_Flipped.png/320px-Achillobator_reconstruction_Flipped.png"
+        }, {
+            "parent": "6",
+            "id": "Acheroraptor",
+            "name": "Acheroraptor",
+            "start": -66,
+            "end": -66,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Acheroraptor_NT_small.jpg/320px-Acheroraptor_NT_small.jpg"
+        }, {
+            "parent": "6",
+            "id": "8",
+            "name": ""
+        }, {
+            "parent": "8",
+            "id": "Velociraptor mongoliensis",
+            "name": "Velociraptor mongoliensis",
+            "start": -75,
+            "end": -71,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Velociraptor_Restoration.png/320px-Velociraptor_Restoration.png"
+        }, {
+            "parent": "8",
+            "id": "9",
+            "name": ""
+        }, {
+            "parent": "9",
+            "id": "Velociraptor osmolskae",
+            "name": "Velociraptor osmolskae",
+            "start": -75,
+            "end": -71,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Velociraptor_Restoration.png/320px-Velociraptor_Restoration.png"
+        }, {
+            "parent": "9",
+            "id": "10",
+            "name": ""
+        }, {
+            "parent": "10",
+            "id": "Tsaagan",
+            "name": "Tsaagan",
+            "start": -75,
+            "end": -75,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Tsaagan_mangas.jpg/1280px-Tsaagan_mangas.jpg"
+        }, {
+            "parent": "10",
+            "id": "Linheraptor",
+            "name": "Linheraptor",
+            "start": -83.6,
+            "end": -72.1,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Linheraptor_skeletal.jpg/1920px-Linheraptor_skeletal.jpg"
+        }];
+
+        var tyrannosaur_tree = [{
+            "parent": "",
+            "id": "Tyrannosauridae",
+            "name": "Tyrannosauridae",
+        }, {
+            "parent": "Tyrannosauridae",
+            "id": "Albertosaurinae",
+            "name": "Albertosaurinae",
+            "start": -76.6,
+            "end": -68,
+        }, {
+            "parent": "Tyrannosauridae",
+            "id": "Tyrannosaurinae",
+            "name": "Tyrannosaurinae"
+        }, {
+            "parent": "Albertosaurinae",
+            "id": "Gorgosaurus",
+            "name": "Gorgosaurus",
+            "start": -76.6,
+            "end": -75.1
+        }, {
+            "parent": "Albertosaurinae",
+            "id": "Albertosaurus",
+            "name": "Albertosaurus",
+            "start": -71,
+            "end": -68
+        }, {
+            "parent": "Tyrannosaurinae",
+            'id': "Alioramini",
+            "name": "Alioramini",
+        }, {
+            "parent": "Alioramini",
+            "id": "Qianzhousaurus",
+            "name": "Qianzhousaurus",
+            "start": -72,
+            "end": -66
+        }, {
+            "parent": "Alioramini",
+            "id": "2",
+            "name": ""
+        }, {
+            "parent": "2",
+            "id": "Alioramus remotus",
+            "name": "Alioramus remotus",
+            "start": -70,
+            "end": -70
+        }, {
+            "parent": "2",
+            "id": "Alioramus altai",
+            "name": "Alioramus altai",
+            "start": -70,
+            "end": -70
+        }, {
+            "parent": "Tyrannosaurinae",
+            "id": "1",
+            "name": "",
+        }, {
+            "parent": "1",
+            "id": "4",
+            "name": ""
+        }, {
+            "parent": "1",
+            "id": "5",
+            "name": ""
+        }, {
+            "parent": "4",
+            "id": "Nanoqsaurus",
+            "name": "Nanoqsaurus",
+            "start": -69.1,
+            "end": -69.1
+        }, {
+            "parent": "4",
+            "id": "Teratopphoneus",
+            "name": "Teratopphoneus",
+            "start": -77,
+            "end": -76
+        }, {
+            "parent": "5",
+            "id": "Lythronax",
+            "name": "Lythronax",
+            "start": -80.6,
+            "end": -79.9
+        }, {
+            "parent": "5",
+            "id": "6",
+            "name": ""
+        }, {
+            "parent": "6",
+            "id": "7",
+            "name": ""
+        }, {
+            "parent": "6",
+            "id": "8",
+            "name": ""
+        }, {
+            "parent": "7",
+            "id": "Daspletosaurus torosus",
+            "name": "Daspletosaurus torosus",
+            "start": -77,
+            "end": -74
+        }, {
+            "parent": "7",
+            "id": "Daspletosaurus horneri",
+            "name": "Daspletosaurus horneri",
+            "start": -77,
+            "end": -74
+        }, {
+            "parent": "8",
+            "id": "Zhuchengtyrannus",
+            "name": "Zhuchengtyrannus",
+            "start": -73.5,
+            "end": -73.5
+        }, {
+            "parent": "8",
+            "id": "9",
+            "name": ""
+        }, {
+            "parent": "9",
+            "id": "Tarbosaurus",
+            "name": "Tarbosaurus",
+            "start": -70,
+            "end": -70
+        }, {
+            "parent": "9",
+            "id": "Tyrannosaurus",
+            "name": "Tyrannosaurus",
+            "start": -68,
+            "end": -66
+        }];
+
+        var paraves_tree = [{
+            "parent": "",
+            "id": "Paraves",
+            "name": "Paraves"
+        }, {
+            "parent": "Paraves",
+            "id": "1",
+            "name": ""
+        }, {
+            "parent": "Paraves",
+            "id": "2",
+            "name": ""
+        }, {
+            "parent": "1",
+            "id": "Scansoriopterygidae",
+            "name": "Scansoriopterygidae",
+            "start": -165,
+            "end": -156
+        }, {
+            "parent": "1",
+            "id": "3",
+            "name": "",
+        }, {
+            "parent": "3",
+            "id": "Xiaotingia",
+            "name": "Xiaotingia",
+            "start": -160,
+            "end": -160
+        }, {
+            "parent": "3",
+            "id": "Yixianosaurus",
+            "name": "Yixianosaurus",
+            "start": -122,
+            "end": -122
+        }, {
+            "parent": "2",
+            "id": "4",
+            "name": ""
+        }, {
+            "parent": "2",
+            "id": "Eumaniraptora",
+            "name": "Eumaniraptora",
+            "start": -165,
+            "end": 0,
+        }, {
+            "parent": "4",
+            "id": "5",
+            "name": ""
+        }, {
+            "parent": "4",
+            "id": "6",
+            "name": ""
+        }, {
+            "parent": "5",
+            "id": "Pedopenna",
+            "name": "Pedopenna",
+            "start": -164,
+            "end": -164
+        }, {
+            "parent": "5",
+            "id": "Aurornis",
+            "name": "Aurornis",
+            "start": -160,
+            "end": -160
+        }, {
+            "parent": "6",
+            "id": "Serikornis",
+            "name": "Serikornis",
+            "start": -165,
+            "end": -162
+        }, {
+            "parent": "6",
+            "id": "Serikornis",
+            "name": "Eosinopteryx",
+            "start": -160,
+            "end": -160
+        }, {
+            "parent": "Eumaniraptora",
+            "id": "Troodontidae",
+            "name": "Troodontidae",
+            "start": -150,
+            "end": -66
+        }, {
+            "parent": "Eumaniraptora",
+            "id": "7",
+            "name": "",
+        }, {
+            "parent": "7",
+            "id": "Dromaeosauridae",
+            "name": "Dromaeosauridae",
+            "start": -143,
+            "end": -66,
+        }, {
+            "parent": "7",
+            "id": "8",
+            "name": "",
+        }, {
+            "parent": "8",
+            "id": "Microraptoria",
+            "name": "Microraptoria",
+            "start": -125,
+            "end": -76.5,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Microraptor_gui_holotype.png/320px-Microraptor_gui_holotype.png"
+        }, {
+            "parent": "8",
+            "id": "9",
+            "name": "",
+        }, {
+            "parent": "9",
+            "id": "Unenglagiidae",
+            "name": "Unenglagiidae",
+        }, {
+            "parent": "Unenglagiidae",
+            "id": "Austroraptor",
+            "name": "Austroraptor",
+            "start": -78,
+            "end": -66,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Austroraptor.jpg/800px-Austroraptor.jpg"
+        }, {
+            "parent": "Unenglagiidae",
+            "id": "Buitreraptor",
+            "name": "Buitreraptor",
+            "start": -94,
+            "end": -94
+        }, {
+            "parent": "Unenglagiidae",
+            "id": "Unenlagia",
+            "name": "Unenlagia",
+            "start": -89,
+            "end": -89
+        }, {
+            "parent": "9",
+            "id": "10",
+            "name": "",
+        }, {
+            "parent": "10",
+            "id": "11",
+            "name": "",
+        }, {
+            "parent": "11",
+            "id": "Overoraptor",
+            "name": "Overoraptor",
+            "start": -97,
+            "end": -93
+        }, {
+            "parent": "11",
+            "id": "Rahonavis",
+            "name": "Rahonavis",
+            "start": -70,
+            "end": -70
+        }, {
+            "parent": "10",
+            "id": "Avialae",
+            "name": "Avialae",
+            "start": -155,
+            "end": 0,
+        }, {
+            "parent": "Avialae",
+            "id": "Archaeopterygidae",
+            "name": "Archaeopterygidae",
+        }, {
+            "parent": "Avialae",
+            "id": "12",
+            "name": "",
+        }, {
+            "parent": "Archaeopterygidae",
+            "id": "Alcmonavis",
+            "name": "Alcmonavis",
+            "start": -150.8,
+            "end": -148.5
+        }, {
+            "parent": "Archaeopterygidae",
+            "id": "13",
+            "name": ""
+        }, {
+            "parent": "13",
+            "id": "Wellnhoferia",
+            "name": "Wellnhoferia",
+            "start": -150,
+            "end": -150
+        }, {
+            "parent": "13",
+            "id": "Archaeopteryx",
+            "name": "Archaeopteryx",
+            "start": -150.8,
+            "end": -148.5,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg/177px-Archaeopteryx_lithographica_%28Berlin_specimen%29.jpg"
+        }, {
+            "parent": "12",
+            "id": "Anchiornithidae",
+            "name": "Anchiornithidae",
+        }, {
+            "parent": "12",
+            "id": "14",
+            "name": ""
+        }, {
+            "parent": "Anchiornithidae",
+            "id": "Xiaotingia",
+            "name": "Xiaotingia",
+            "start": -160,
+            "end": -160
+        }, {
+            "parent": "Anchiornithidae",
+            "id": "Achiornis",
+            "name": "Achiornis",
+            "start": -160.89,
+            "end": -160.25,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Anchiornis_huxleyi_skel_hartman_2017.png/320px-Anchiornis_huxleyi_skel_hartman_2017.png"
+        }, {
+            "parent": "14",
+            "id": "Jeholornis",
+            "name": "Jeholornis",
+            "start": -122,
+            "end": -120
+        }, {
+            "parent": "14",
+            "id": "Pygostylia",
+            "name": "Pygostylia"
+        }, {
+            "parent": "Pygostylia",
+            "name": "Confuciusornis",
+            "start": -125,
+            "end": -120
+        }, {
+            "parent": "Pygostylia",
+            "id": "15",
+            "name": ""
+        }, {
+            "parent": "15",
+            "id": "Chongmingia",
+            "name": "Chongmingia",
+            "start": -125,
+            "end": -113
+        }, {
+            "parent": "15",
+            "id": "Ornithothoraces",
+            "name": "Ornithothoraces",
+            "start": -131,
+            "end": 0
+        }];
+
+
+        function render() {
+            const p = document.getElementById("periods");
+            const t = document.getElementById("tree");
+            const s = document.getElementById("style");
+            const title = document.getElementById("diagramTitle");
+            const start = document.getElementById("diagramTimelineStart");
+            const end = document.getElementById("diagramTimelineEnd");
+            const units = document.getElementById("diagramUnits");
+
+            const diagram = new timeline(title.value, JSON.parse(p.value), JSON.parse(t.value), start.value, end.value, units.value, JSON.parse(s.value));
+            diagram.draw();
+        }
+
+        function toggle(id) {
+            const node = document.getElementById(id);
+            if (node.classList.contains("hidden")) {
+                node.classList.remove("hidden");
+            } else {
+                node.classList.add("hidden");
+            }
+        }
+
+        function download() {
+            const dataUrl = document.getElementById("timeline").toDataURL("png");
+            const win = window.open(dataUrl, '_blank');
+        }
+
+        function setExampleDromaeosaurs() {
+            document.getElementById("diagramTitle").value = "Dromaeosaurs";
+            document.getElementById("diagramTimelineStart").value = -150;
+            document.getElementById("diagramTimelineEnd").value = -50;
+            document.getElementById("diagramUnits").value = "Ma";
+            document.getElementById("periods").value = JSON.stringify(periods, null, 1);
+            document.getElementById("tree").value = JSON.stringify(dromaeosaur_tree, null, 1);
+            document.getElementById("style").value = JSON.stringify(style, null, 1);
+            render();
+        }
+
+        function setExampleTyrannosaurs() {
+            document.getElementById("diagramTitle").value = "Tyrannosaurs";
+            document.getElementById("diagramTimelineStart").value = -100;
+            document.getElementById("diagramTimelineEnd").value = -50;
+            document.getElementById("diagramUnits").value = "Ma";
+            document.getElementById("periods").value = JSON.stringify(periods, null, 1);
+            document.getElementById("tree").value = JSON.stringify(tyrannosaur_tree, null, 1);
+            document.getElementById("style").value = JSON.stringify(style, null, 1);
+            render();
+        }
+
+        function setExampleParaves() {
+            document.getElementById("diagramTitle").value = "Paraves";
+            document.getElementById("diagramTimelineStart").value = -200;
+            document.getElementById("diagramTimelineEnd").value = -25;
+            document.getElementById("diagramUnits").value = "Ma";
+            document.getElementById("periods").value = JSON.stringify(periods, null, 1);
+            document.getElementById("tree").value = JSON.stringify(paraves_tree, null, 1);
+            document.getElementById("style").value = JSON.stringify(style, null, 1);
+            render();
+        }
+
+        setExampleDromaeosaurs();
+    </script>
+</body>
+
+</html>
