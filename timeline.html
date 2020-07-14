@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>hacked.design - Prehistoric Tree - Timeline Generator</title>
+    <title>hacked.design - Prehistoric Tree - Timeline Creator</title>
 
-    <meta name="description" content="Prehistoric Tree to Timeline Image Generator">
+    <meta name="description" content="Prehistoric Tree to Timeline Image Creator">
     <meta name="author" content="hacked.design">
 
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
     </header>
     <main id="content">
         <h1>
-            Prehistoric Tree - Timeline Generator
+            Prehistoric Tree - Timeline Creator
         </h1>
         <div class="form-group">
             <label for="diagramTitle">Diagram Title</label>
@@ -53,16 +53,18 @@
             <button type="button" onclick="setExampleDromaeosaurs()">Dromaeosaurs</button>
             <button type="button" onclick="setExampleTyrannosaurs()">Tyrannosaurs</button>
             <button type="button" onclick="setExampleParaves()">Paraves</button>
+            <button type="button" onclick="setExampleJurassicPark()">Jurassic Park</button>
         </div>
 
-        <small id="help" class="form-text text-muted">Click refresh to redraw the diagram</small>
+        <small>Click refresh to redraw the diagram</small>
         <input type="button" value="Refresh" onclick="render()" class="primary">
         <small>
-            version 0.2a
+            version 0.4a - Click the diagram to download a full sized copy
         </small>
 
 
     </main>
+
     <canvas id="timeline" onclick="download()" width="1800px"></canvas>
     <footer id="footer">
         <div id="copyright">2020 <span class="corp-blue">hacked</span>.<span class="corp-yellow">design</span></div>
@@ -663,6 +665,98 @@
             "end": 0
         }];
 
+        var jurassicpark_tree = [{
+                "parent": "",
+                "id": "Dinosauria",
+                "name": "Dinosauria"
+            }, {
+                "parent": "Dinosauria",
+                "id": "Saurischia",
+                "name": "Saurischia"
+            }, {
+                "parent": "Dinosauria",
+                "id": "Ornithischia",
+                "name": "Ornithischia"
+            }, {
+                "parent": "Saurischia",
+                "id": "Sauropoda",
+                "name": "Sauropoda"
+            }, {
+                "parent": "Saurischia",
+                "id": "Theropoda",
+                "name": "Theropoda"
+            }, {
+                "parent": "Sauropoda",
+                "id": "Alamosaurus",
+                "name": "Alamosaurus",
+                "start": -70,
+                "end": -66
+            }, {
+                "parent": "Sauropoda",
+                "id": "Brachiosaurus",
+                "name": "Brachiosaurus",
+                "start": -154,
+                "end": -153
+
+            }, {
+                "parent": "Sauropoda",
+                "id": "Brontosaurus",
+                "name": "Brontosaurus",
+                "start": -156.3,
+                "end": -146.8
+            }, {
+                "parent": "Theropoda",
+                "id": "Dilophosaurus",
+                "name": "Dilophosaurus",
+                "start": -193,
+                "end": -193
+            }, {
+                "parent": "Theropoda",
+                "id": "Gallimimus",
+                "name": "Gallimimus",
+                "start": -70,
+                "end": -70
+            }, {
+                "parent": "Theropoda",
+                "id": "Metriacanthosaurus",
+                "name": "Metriacanthosaurus",
+                "start": -160,
+                "end": -160
+            }, {
+                "parent": "Ornithischia",
+                "id": "Parasaurolophus",
+                "name": "Parasaurolophus",
+                "start": -76.5,
+                "end": -73
+            }, {
+                "parent": "Ornithischia",
+                "id": "Triceratops",
+                "name": "Triceratops",
+                "start": -68,
+                "end": -66
+            }, {
+                "parent": "Theropoda",
+                "id": "Tyrannosaurus",
+                "name": "Tyrannosaurus",
+                "start": -68,
+                "end": -66
+            }, {
+                "parent": "Theropoda",
+                "name": "Velociraptor",
+                "start": -75,
+                "end": -71
+            }, {
+                "parent": "Ornithischia",
+                "id": "Stegosaurus",
+                "name": "Stegosaurus",
+                "start": -155,
+                "end": -150
+            }
+
+
+
+        ];
+
 
         function render() {
             const p = document.getElementById("periods");
@@ -720,6 +814,17 @@
             document.getElementById("diagramUnits").value = "Ma";
             document.getElementById("periods").value = JSON.stringify(periods, null, 1);
             document.getElementById("tree").value = JSON.stringify(paraves_tree, null, 1);
+            document.getElementById("style").value = JSON.stringify(style, null, 1);
+            render();
+        }
+
+        function setExampleJurassicPark() {
+            document.getElementById("diagramTitle").value = "Jurassic Park Dinosaurs";
+            document.getElementById("diagramTimelineStart").value = -210;
+            document.getElementById("diagramTimelineEnd").value = -50;
+            document.getElementById("diagramUnits").value = "Ma";
+            document.getElementById("periods").value = JSON.stringify(periods, null, 1);
+            document.getElementById("tree").value = JSON.stringify(jurassicpark_tree, null, 1);
             document.getElementById("style").value = JSON.stringify(style, null, 1);
             render();
         }
