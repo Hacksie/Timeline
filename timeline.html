@@ -15,10 +15,7 @@
 </head>
 
 <body>
-
-    <header id="header">
-
-    </header>
+    <header id="header"></header>
     <main id="content">
         <h1>
             Prehistoric Tree - Timeline Creator
@@ -54,12 +51,13 @@
             <button type="button" onclick="setExampleTyrannosaurs()">Tyrannosaurs</button>
             <button type="button" onclick="setExampleParaves()">Paraves</button>
             <button type="button" onclick="setExampleJurassicPark()">Jurassic Park</button>
+            <button type="button" onclick="setExampleHumans()">Humans</button>
         </div>
 
         <small>Click refresh to redraw the diagram</small>
         <input type="button" value="Refresh" onclick="render()" class="primary">
         <small>
-            version 0.4a - Click the diagram to download a full sized copy
+            version 0.5a - Click the diagram to download a full sized copy
         </small>
 
 
@@ -666,96 +664,325 @@
         }];
 
         var jurassicpark_tree = [{
-                "parent": "",
-                "id": "Dinosauria",
-                "name": "Dinosauria"
-            }, {
-                "parent": "Dinosauria",
-                "id": "Saurischia",
-                "name": "Saurischia"
-            }, {
-                "parent": "Dinosauria",
-                "id": "Ornithischia",
-                "name": "Ornithischia"
-            }, {
-                "parent": "Saurischia",
-                "id": "Sauropoda",
-                "name": "Sauropoda"
-            }, {
-                "parent": "Saurischia",
-                "id": "Theropoda",
-                "name": "Theropoda"
-            }, {
-                "parent": "Sauropoda",
-                "id": "Alamosaurus",
-                "name": "Alamosaurus",
-                "start": -70,
-                "end": -66
-            }, {
-                "parent": "Sauropoda",
-                "id": "Brachiosaurus",
-                "name": "Brachiosaurus",
-                "start": -154,
-                "end": -153
+            "parent": "",
+            "id": "Dinosauria",
+            "name": "Dinosauria"
+        }, {
+            "parent": "Dinosauria",
+            "id": "Saurischia",
+            "name": "Saurischia"
+        }, {
+            "parent": "Dinosauria",
+            "id": "Ornithischia",
+            "name": "Ornithischia"
+        }, {
+            "parent": "Saurischia",
+            "id": "Sauropoda",
+            "name": "Sauropoda"
+        }, {
+            "parent": "Saurischia",
+            "id": "Theropoda",
+            "name": "Theropoda"
+        }, {
+            "parent": "Sauropoda",
+            "id": "Alamosaurus",
+            "name": "Alamosaurus",
+            "start": -70,
+            "end": -66
+        }, {
+            "parent": "Sauropoda",
+            "id": "Brachiosaurus",
+            "name": "Brachiosaurus",
+            "start": -154,
+            "end": -153
 
-            }, {
-                "parent": "Sauropoda",
-                "id": "Brontosaurus",
-                "name": "Brontosaurus",
-                "start": -156.3,
-                "end": -146.8
-            }, {
-                "parent": "Theropoda",
-                "id": "Dilophosaurus",
-                "name": "Dilophosaurus",
-                "start": -193,
-                "end": -193
-            }, {
-                "parent": "Theropoda",
-                "id": "Gallimimus",
-                "name": "Gallimimus",
-                "start": -70,
-                "end": -70
-            }, {
-                "parent": "Theropoda",
-                "id": "Metriacanthosaurus",
-                "name": "Metriacanthosaurus",
-                "start": -160,
-                "end": -160
-            }, {
-                "parent": "Ornithischia",
-                "id": "Parasaurolophus",
-                "name": "Parasaurolophus",
-                "start": -76.5,
-                "end": -73
-            }, {
-                "parent": "Ornithischia",
-                "id": "Triceratops",
-                "name": "Triceratops",
-                "start": -68,
-                "end": -66
-            }, {
-                "parent": "Theropoda",
-                "id": "Tyrannosaurus",
-                "name": "Tyrannosaurus",
-                "start": -68,
-                "end": -66
-            }, {
-                "parent": "Theropoda",
-                "name": "Velociraptor",
-                "start": -75,
-                "end": -71
-            }, {
-                "parent": "Ornithischia",
-                "id": "Stegosaurus",
-                "name": "Stegosaurus",
-                "start": -155,
-                "end": -150
-            }
+        }, {
+            "parent": "Sauropoda",
+            "id": "Brontosaurus",
+            "name": "Brontosaurus",
+            "start": -156.3,
+            "end": -146.8
+        }, {
+            "parent": "Theropoda",
+            "id": "Dilophosaurus",
+            "name": "Dilophosaurus",
+            "start": -193,
+            "end": -193
+        }, {
+            "parent": "Theropoda",
+            "id": "Gallimimus",
+            "name": "Gallimimus",
+            "start": -70,
+            "end": -70
+        }, {
+            "parent": "Theropoda",
+            "id": "Metriacanthosaurus",
+            "name": "Metriacanthosaurus",
+            "start": -160,
+            "end": -160
+        }, {
+            "parent": "Ornithischia",
+            "id": "Parasaurolophus",
+            "name": "Parasaurolophus",
+            "start": -76.5,
+            "end": -73
+        }, {
+            "parent": "Ornithischia",
+            "id": "Triceratops",
+            "name": "Triceratops",
+            "start": -68,
+            "end": -66
+        }, {
+            "parent": "Theropoda",
+            "id": "Tyrannosaurus",
+            "name": "Tyrannosaurus",
+            "start": -68,
+            "end": -66
+        }, {
+            "parent": "Theropoda",
+            "name": "Velociraptor",
+            "start": -75,
+            "end": -71
+        }, {
+            "parent": "Ornithischia",
+            "id": "Stegosaurus",
+            "name": "Stegosaurus",
+            "start": -155,
+            "end": -150
+        }];
 
+        var humans_tree = [{
+            "parent": "",
+            "id": "Hominoidea",
+            "name": "Hominoidea",
+        }, {
+            "parent": "Hominoidea",
+            "id": "Hylobatidae",
+            "name": "Hylobatidae (Gibbons)",
+            "start": -20.4,
+            "end": 0
+        }, {
+            "parent": "Hominoidea",
+            "id": "Hominidae",
+            "name": "Hominidae",
+        }, {
+            "parent": "Hominidae",
+            "id": "Ponginae",
+            "name": "Ponginae (Orangutans)",
+            "start": -18.5,
+            "end": 0
+        }, {
+            "parent": "Hominidae",
+            "id": "Homininae",
+            "name": "Homininae",
+        }, {
+            "parent": "Homininae",
+            "id": "Gorillini",
+            "name": "Gorillini (Gorillas)",
+            "start": -8.0,
+            "end": 0
+        }, {
+            "parent": "Homininae",
+            "id": "Hominini",
+            "name": "Hominini",
+        }, {
+            "parent": "Hominini",
+            "id": "Panina",
+            "name": "Panina (Chimpanzees)",
+            "start": -6.0,
+            "end": 0
+        }, {
+            "parent": "Hominini",
+            "id": "Australopithecines",
+            "name": "Australopithecines"
+        }, {
+            "parent": "Australopithecines",
+            "id": "Ardipithecus Ramidus",
+            "name": "Ardipithecus Ramidus",
+            "start": -5.77,
+            "end": -4.4
+        }, {
+            "parent": "Australopithecines",
+            "id": "Australopithecus anamensis",
+            "name": "Australopithecus anamensis",
+        }, {
+            "parent": "Australopithecus anamensis",
+            "id": "Australopithecus anamensis 2",
+            "name": "Australopithecus anamensis",
+            "start": -4.2,
+            "end": -3.8
+        }, {
+            "parent": "Australopithecus anamensis",
+            "id": "1",
+            "name": "",
+        }, {
+            "parent": "1",
+            "id": "Australopithecus afarensis",
+            "name": "Australopithecus afarensis",
+            "start": -3.9,
+            "end": -2.9
+        }, {
+            "parent": "1",
+            "id": "2",
+            "name": "",
+        }, {
+            "parent": "2",
+            "id": "Australopithecus garhi",
+            "name": "Australopithecus garhi",
+            "start": -2.5,
+            "end": -2.5
+        }, {
+            "parent": "2",
+            "id": "3",
+            "name": "",
+        }, {
+            "parent": "3",
+            "id": "Australopithecus deyiremeda",
+            "name": "Australopithecus deyiremeda",
+            "start": -3.5,
+            "end": -3.3
+        }, {
+            "parent": "3",
+            "id": "4",
+            "name": "",
+        }, {
+            "parent": "4",
+            "id": "Kenyanthropus",
+            "name": "Kenyanthropus",
+            "start": -3.5,
+            "end": -3.2
+        }, {
+            "parent": "4",
+            "id": "5",
+            "name": "",
+        }, {
+            "parent": "5",
+            "id": "6",
+            "name": "",
+        }, {
+            "parent": "6",
+            "id": "Australopithecus africanus",
+            "name": "Australopithecus africanus",
+            "start": -3.67,
+            "end": -2.1
 
+        }, {
+            "parent": "6",
+            "id": "Paranthropus",
+            "name": "Paranthropus",
+            "start": -2.6,
+            "end": -0.6
+        }, {
+            "parent": "5",
+            "id": "Homo",
+            "name": "Homo",
+        }, {
+            "parent": "Homo",
+            "id": "Homo habilis",
+            "name": "Homo habilis",
+            "start": -2.3,
+            "end": -1.65
+        }, {
+            "parent": "Homo",
+            "id": "Homo rudolfensis",
+            "name": "Homo rudolfensis",
+            "start": -2.5,
+            "end": -1.55
 
-        ];
+        }, {
+            "parent": "Homo",
+            "id": "Homo erectus 1",
+            "name": "Homo erectus",
+        }, {
+            "parent": "Homo",
+            "id": "Australopithecus sediba",
+            "name": "Australopithecus sediba",
+            "start": -1.98,
+            "end": -1.98
+        }, {
+            "parent": "Homo",
+            "id": "Homo floresiensis",
+            "name": "Homo floresiensis",
+            "start": -0.19,
+            "end": -0.05
+        }, {
+            "parent": "Homo erectus 1",
+            "id": "Homo ergaster",
+            "name": "Homo ergaster",
+            "start": -2.0,
+            "end": -1.5
+        }, {
+            "parent": "Homo erectus 1",
+            "id": "7",
+            "name": "",
+        }, {
+            "parent": "7",
+            "id": "African Homo erectus",
+            "name": "African Homo erectus",
+            "start": -2.0,
+            "end": -0.1
+        }, {
+            "parent": "7",
+            "id": "Asian Homo erectus",
+            "name": "Asian Homo erectus",
+            "start": -2.0,
+            "end": -0.1
+        }, {
+            "parent": "7",
+            "id": "Red Deer Cave people",
+            "name": "Red Deer Cave people",
+            "start": -0.0145,
+            "end": -0.0115
+        }, {
+            "parent": "7",
+            "id": "8",
+            "name": "",
+        }, {
+            "parent": "8",
+            "id": "Homo antecessor",
+            "name": "Homo antecessor",
+            "start": -1.2,
+            "end": -0.8
+        }, {
+            "parent": "8",
+            "id": "9",
+            "name": "",
+        }, {
+            "parent": "9",
+            "id": "Neandersovans",
+            "name": "Neandersovans",
+        }, {
+            "parent": "Neandersovans",
+            "id": "10",
+            "name": "",
+        }, {
+            "parent": "Neandersovans",
+            "id": "Denisova people",
+            "name": "Denisova people",
+            "start": -0.29,
+            "end": -0.015
+        }, {
+            "parent": "10",
+            "id": "Homo neanderthalensis",
+            "name": "Homo neanderthalensis",
+            "start": -0.25,
+            "end": -0.04,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Homo_sapiens_neanderthalensis.jpg/188px-Homo_sapiens_neanderthalensis.jpg"
+        }, {
+            "parent": "10",
+            "id": "Homo Heidelbergensis",
+            "name": "Homo Heidelbergensis",
+            "start": -0.7,
+            "end": -0.2,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Homo_heidelbergensis._Museo_de_Prehistoria_de_Valencia.jpg/188px-Homo_heidelbergensis._Museo_de_Prehistoria_de_Valencia.jpg"
+        }, {
+            "parent": "9",
+            "id": "Homo sapiens",
+            "name": "Homo sapiens",
+            "start": -0.35,
+            "end": 0.0,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Skhul.JPG"
+        }];
 
 
         function render() {
@@ -825,6 +1052,17 @@
             document.getElementById("diagramUnits").value = "Ma";
             document.getElementById("periods").value = JSON.stringify(periods, null, 1);
             document.getElementById("tree").value = JSON.stringify(jurassicpark_tree, null, 1);
+            document.getElementById("style").value = JSON.stringify(style, null, 1);
+            render();
+        }
+
+        function setExampleHumans() {
+            document.getElementById("diagramTitle").value = "Humans and Apes";
+            document.getElementById("diagramTimelineStart").value = -10;
+            document.getElementById("diagramTimelineEnd").value = 1;
+            document.getElementById("diagramUnits").value = "Ma";
+            document.getElementById("periods").value = JSON.stringify(periods, null, 1);
+            document.getElementById("tree").value = JSON.stringify(humans_tree, null, 1);
             document.getElementById("style").value = JSON.stringify(style, null, 1);
             render();
         }

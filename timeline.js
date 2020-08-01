@@ -91,6 +91,20 @@ class timeline {
         this.context.strokeRect(r.x - 1, r.y - 1, r.w + 2, r.h + 2);
     }
 
+    drawPeriodBackground(r, hue) {
+        this.context.fillStyle = this.hsl(hue, this.style.periodSaturation, this.style.periodLight);
+        this.context.fillRect(r.x, r.y, r.w, r.h);
+    }
+
+    drawPeriodLine(p1, p2, hue) {
+        console.log('line');
+        this.context.strokeStyle = this.hsl(hue, this.style.strokeSaturation, this.style.strokeLight);
+        this.context.beginPath();
+        this.context.moveTo(p1.x, p1.y);
+        this.context.lineTo(p2.x, p2.y);
+        this.context.stroke();
+    }
+
     drawTimelineAxisBox(name, startPercent, endPercent, hue) {
         const r = new rect(Math.round(this.timelineRect.x + (this.timelineRect.w * startPercent)), this.timelineAxisTop, Math.round(this.timelineRect.w * endPercent - (this.timelineRect.w * startPercent)), this.style.timelineAxisLabelHeight);
         this.context.fillStyle = this.hsl(hue, this.style.fillSaturation, this.style.fillLight);
@@ -102,17 +116,11 @@ class timeline {
         this.context.textAlign = "center";
         this.context.fillText(name, r.x + (r.w / 2), r.y + (r.h / 2));
         if (this.style.showPeriodBackground) {
-            this.context.fillStyle = this.hsl(hue, this.style.periodSaturation, this.style.periodLight);
-            this.context.fillRect(r.x, this.timelineRect.y, r.w, this.timelineRect.h);
+            this.drawPeriodBackground(new rect(r.x, this.timelineRect.y, r.w, this.timelineRect.h), hue);
         }
 
         if (this.style.showPeriodLines) {
-            this.context.strokeStyle = this.hsl(hue, this.style.strokeSaturation, this.style.strokeLight);
-            this.context.beginPath();
-            this.context.moveTo(r.x, this.timelineRect.y);
-            this.context.lineTo(r.x, this.timelineRect.y + this.timelineRect.h);
-            this.context.strokeStyle = this.style.branchOutlineStrokeColor;
-            this.context.stroke();
+            this.drawPeriodLine(new point(r.x, this.timelineRect.y), new point(r.x, this.timelineRect.y + this.timelineRect.h), hue)
         }
     }
 
@@ -375,6 +383,11 @@ class timeline {
         }
     }
 
+    clearCanvas() {
+        this.context.fillStyle = "white";
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
     resizeDrawingAreas() {
         const treeDepth = this.calcBranchDepth(this.tree);
         const treeHeight = this.calcBranchHeight(this.tree);
@@ -418,12 +431,14 @@ class timeline {
             console.log("No tree root found");
             return;
         }
+        if (roots.length > 1) {
+            console.log("Multiple tree roots found, using first");
+        }
         this.tree = roots[0];
         const treeHeight = this.resizeDrawingAreas();
-        this.context.fillStyle = "white";
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawTitle();
 
+        this.clearCanvas();
+        this.drawTitle();
         this.drawTimelineAxisLabel();
         this.drawTree(this.tree, 0, 0, treeHeight);
         if (this.style.drawAreaOutlines) {
